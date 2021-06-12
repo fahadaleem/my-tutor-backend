@@ -7,6 +7,38 @@
     <title>My tutor backend</title>
 </head>
 <body>
-    <h1>Server Started</h1>
+    <h1>Mytutor Backend Server Started</h1>
+    <h1>End Points</h1>
+    <h2>----Applicants-----</h2>
+    <h3>List all the applicants</h3>
+    <h3>/get-all-applicants</h3>
+    <p>Method: GET</p>
+    <p>Response: JSON</p>
+    <p>{
+        "applicants":[],
+        "total_applicants":10    
+    }</p>
+
+    <h3>Get the applicant details</h3>
+    <h3>/view-applicants/id</h3>
+    <p>Method: GET</p>
+    <p>Response: JSON</p>
+    <p>{<br>
+        applied_date: "2021-06-12 15:54:26.466405",<br>
+country: "Pakistan", <br>
+education: "Graduation", <br>
+email: "faleem3@gmail.com", <br>
+expected_salary: "30",<br>
+gender: "Male",<br>
+id: "2",<br>
+intro: "Student of BSCS and having 2 years experience of teaching",<br>
+name: "Muhammad Fahad Aleem",<br>
+phone_no: "923432979102",<br>
+preferred_currency: "USD",<br>
+resume: "https://www.geeksforgeeks.org/python-call-function-from-another-file/",<br>
+teaching_experience: "2 Years",<br>
+willing_to_teach_courses: "Python, Maths",<br>    
+    }</p>
+
 </body>
 </html>
