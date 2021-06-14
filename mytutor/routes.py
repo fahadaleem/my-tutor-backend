@@ -48,7 +48,6 @@ def add_new_applicant():
         return generate_message(200, "application submitted")
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
-        print(f'{error} fahad aleem 2020')
         if 'already exists'.lower() in error:
             return generate_message(201, "applicant already submitted application")
 
