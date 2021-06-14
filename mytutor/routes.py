@@ -51,7 +51,7 @@ def add_new_applicant():
         error = str(e.__dict__['orig'])
         if 'UNIQUE constraint failed' in error:
             return generate_message(201, "applicant already submitted application")
-
+    return 'fahad'
 
 @app.route("/hire-applicant/<id>", methods=['GET'])
 def hire_new_applicant(id):
