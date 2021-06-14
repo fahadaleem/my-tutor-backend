@@ -47,11 +47,10 @@ def add_new_applicant():
         db.session.commit()
         return generate_message(200, "application submitted")
     except SQLAlchemyError as e:
-        print(e)
         error = str(e.__dict__['orig'])
-        if 'UNIQUE constraint failed' in error:
+        print(f'{error} fahad aleem 2020')
+        if 'already exists'.lower() in error:
             return generate_message(201, "applicant already submitted application")
-    return 'fahad'
 
 @app.route("/hire-applicant/<id>", methods=['GET'])
 def hire_new_applicant(id):
