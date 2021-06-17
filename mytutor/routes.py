@@ -62,3 +62,13 @@ def view_applicant_details(id):
     if applicant is None:
         return generate_message(201, "Record not found")
     return generate_json_for_applicants(applicant)
+
+
+@app.route("/delete-applicant/<id>", methods=['GET'])
+def delete_applicant(id):
+    print(id)
+    applicant = Applicants.query.filter_by(id=id).delete()
+    if applicant==0:
+        return generate_message(201, "Record not found")
+    db.session.commit()
+    return generate_message(200, "Applicant deleted successfully.")
