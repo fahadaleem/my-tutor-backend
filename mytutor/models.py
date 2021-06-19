@@ -24,3 +24,30 @@ class Applicants(db.Model):
         return f'({self.name}, {self.email}, {self.country}, {self.phone_no}, {self.gender}, {self.education}, {self.teaching_experience}, {self.willing_to_teach_courses}, {self.expected_salary}, {self.preferred_currency}, {self.intro}, {self.resume})'
 
 
+
+class Teachers(db.Model):
+    __tablename__ = 'teachers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+    country = db.Column(db.String(100), nullable=False)
+    phone_no = db.Column(db.String(25), nullable=False)
+    gender = db.Column(db.String(25), nullable=False)
+    education = db.Column(db.String(255), nullable=False)
+    teaching_experience = db.Column(db.String(100), nullable=False)
+    salary = db.Column(db.Integer, nullable=False)
+    preferred_currency = db.Column(db.String(10), nullable=False)
+    intro = db.Column(db.Text)
+    resume = db.Column(db.String(255), nullable=False)
+    course_code_1 = db.Column(db.String(50), nullable=True)
+    course_code_2 = db.Column(db.String(50), nullable=True)
+    hiring_date = db.Column(db.String(50), nullable=False)
+    
+    def __repr__(self):
+        return f'({self.name} {self.email} {self.password} {self.country} {self.phone_no} {self.gender} {self.education} {self.teaching_experience} {self.salary} {self.preferred_currency} {self.intro} {self.course_code_1} {self.course_code_2} {self.resume} {self.hiring_date})'
+
+
+
+    

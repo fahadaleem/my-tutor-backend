@@ -2,7 +2,7 @@ import re
 from mytutor.functions import generate_message, generate_json_for_applicants
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants
+from mytutor.models import Applicants, Teachers
 from sqlalchemy.exc import SQLAlchemyError
 
 db.create_all()
@@ -51,9 +51,30 @@ def add_new_applicant():
         if 'already exists'.lower() in error:
             return generate_message(201, "applicant already submitted application")
 
-@app.route("/hire-applicant/<id>", methods=['GET'])
-def hire_new_applicant(id):
-    return 'hire new applicant'
+@app.route("/hire-applicant", methods=['POST'])
+def hire_new_applicant():
+    name = request.json['name']
+    email = request.json['email']
+    password = request.json['password']
+    phone_no = request.json['phone_no']
+    gender = request.json['gender']
+    country = request.json['country']
+    education = request.json['education']
+    teaching_experience = request.json['teaching_experience']
+    course_code_1 = request.json['course_code_1']
+    course_code_2 = request.json['course_code_2']
+    salary = request.json['salary']
+    preferred_currency=request.json['preferred_currency']
+    resume = request.json['resume']
+    hiring_date = request.json['hiring_date']
+    ## add new teacher
+    new_Teacher = Teachers(name=name, email=email,password=password, gender=gender, phone_no = phone_no, country=country, education=education, teaching_experience=teaching_experience,course_code_1=course_code_1, course_code_2=course_code_2,  salary=salary, preferred_currency=preferred_currency,resume=resume, hiring_date=hiring_date)
+    db.session.add(new_Teacher)
+    db.session.commit()
+    ## delete applicant after hiring
+    Applicants.query.filter_by(email=email).delete()
+    db.session.commit()
+    return generate_message(200,'Teacher Hired Successfully!')
 
 
 @app.route("/view-applicant/<id>", methods=['GET'])
