@@ -117,3 +117,11 @@ def get_all_teachers():
 def view_teacher(id):
     teacher = Teachers.query.get(id)
     return generate_json_for_teachers(teacher)
+
+@app.route("/delete-teacher/<id>", methods=['GET'])
+def delete_teacher(id):
+    deleted_teacher = Teachers.query.filter_by(id=id).delete()
+    if deleted_teacher == 0:
+        return generate_message(201,'No Record Found')
+    db.session.commit()
+    return generate_message(200, 'Teacher Delete Successfully!')
