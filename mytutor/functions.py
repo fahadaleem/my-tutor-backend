@@ -25,3 +25,21 @@ def generate_json_for_applicants(data):
     }
 
 
+def generate_json_for_teachers(data):
+    return {
+        "id":data.id,
+        "name":data.name,
+        "email":data.email,
+        "password":data.password,
+        "country":data.country,
+        "gender":data.gender,
+        "education":data.education,
+        "phone_no":data.phone_no,
+        "teaching_experience":data.teaching_experience,
+        "salary":data.salary,
+        "preferred_currency":data.preferred_currency,
+        "resume":data.resume,
+        "hiring_date":data.hiring_date
+    }
+
+
