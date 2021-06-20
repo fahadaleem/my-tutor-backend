@@ -35,6 +35,8 @@ def generate_json_for_teachers(data):
         "gender":data.gender,
         "education":data.education,
         "phone_no":data.phone_no,
+        "course_code_1":data.course_code_1,
+        "course_code_2":data.course_code_2,
         "teaching_experience":data.teaching_experience,
         "salary":data.salary,
         "preferred_currency":data.preferred_currency,
