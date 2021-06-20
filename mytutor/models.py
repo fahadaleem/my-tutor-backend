@@ -20,9 +20,9 @@ class Applicants(db.Model):
     intro = db.Column(db.Text)
     resume = db.Column(db.String(255), nullable=False)
     applied_on = db.Column(db.DateTime, default=datetime.utcnow)
+
     def __repr__(self):
         return f'({self.name}, {self.email}, {self.country}, {self.phone_no}, {self.gender}, {self.education}, {self.teaching_experience}, {self.willing_to_teach_courses}, {self.expected_salary}, {self.preferred_currency}, {self.intro}, {self.resume})'
-
 
 
 class Teachers(db.Model):
@@ -44,10 +44,6 @@ class Teachers(db.Model):
     course_code_1 = db.Column(db.String(50), nullable=True)
     course_code_2 = db.Column(db.String(50), nullable=True)
     hiring_date = db.Column(db.String(50), nullable=False)
-    
+
     def __repr__(self):
         return f'({self.name} {self.email} {self.password} {self.country} {self.phone_no} {self.gender} {self.education} {self.teaching_experience} {self.salary} {self.preferred_currency} {self.intro} {self.course_code_1} {self.course_code_2} {self.resume} {self.hiring_date})'
-
-
-
-    
