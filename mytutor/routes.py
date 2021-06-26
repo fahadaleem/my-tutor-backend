@@ -6,7 +6,7 @@ from sqlalchemy.orm import eagerload
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students, Admin
+from mytutor.models import Applicants, Teachers, Students, Admin, Course
 from sqlalchemy.exc import SQLAlchemyError
 
 

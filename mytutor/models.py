@@ -78,3 +78,18 @@ class Admin(db.Model):
     def __repr__(self):
         return f'({self.name} {self.name} {self.email} {self.role})'
 
+
+class Course(db.Model):
+    __tablename__= "course"
+
+    id = db.Column(db.String(255), primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    course_outline = db.Column(db.Text, nullable=False)
+    duration = db.Column(db.String(255), nullable=False)
+    price = db.Column(db.String(255), nullable=False)
+    language = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return f'({self.id} {self.name} {self.description} {self.course_outline} {self.duration} {self.price} {self.language} {self.category})'
