@@ -79,8 +79,8 @@ class Admin(db.Model):
         return f'({self.name} {self.name} {self.email} {self.role})'
 
 
-class Course(db.Model):
-    __tablename__= "course"
+class Courses(db.Model):
+    __tablename__= "courses"
 
     id = db.Column(db.String(255), primary_key=True)
     name = db.Column(db.String(255), nullable=False)

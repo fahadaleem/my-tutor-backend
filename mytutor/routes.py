@@ -6,7 +6,7 @@ from sqlalchemy.orm import eagerload
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students, Admin, Course
+from mytutor.models import Applicants, Teachers, Students, Admin, Courses
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -239,3 +239,7 @@ def delete_admin(id):
         return generate_message(201, 'Record not found')
     db.session.commit()
     return generate_message(200, 'Admin delete successfully!')
+
+@app.route("/add-new-course", methods=['POST'])
+def course():
+   "
