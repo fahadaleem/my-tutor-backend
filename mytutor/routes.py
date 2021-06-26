@@ -198,3 +198,29 @@ def delete_student(id):
     return generate_message(200, "Student deleted successfully.")
 
 
+@app.route("/add-admin", methods=['POST'])
+def add_new_addmin():
+    try:
+        name = request.json['name']
+        email = request.json['email']
+        password = request.json['password']
+        role = request.json['json']
+        new_admin = Admin(name=name, email=email, role=role)
+        db.session.add(new_admin)
+        db.session.commit()
+        return generate_message(200, "New Admin added successfully!")
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        if 'UNIQUE constraint failed' in error:
+            return generate_message(201, "Admin is already added.")
+        elif 'already exists'.lower() in error:
+            return generate_message(201, "Admin is already added.")
+
+
+@app.route("/admin", methods=['GET'])
+def all_admin():
+    admins = Admin.query.all() 
+
+
+
+

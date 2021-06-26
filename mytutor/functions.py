@@ -56,3 +56,12 @@ def generate_json_for_students(data):
         "current_institute":data.current_institute,
         "email":data.email
     }
+
+def generate_json_for_admin(data):
+    return {
+        "id":data.id,
+        "name":data.name,
+        "email":data.email,
+        "password":data.password,
+        "role":data.role
+    }
