@@ -6,10 +6,16 @@ from sqlalchemy.orm import eagerload
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students
+from mytutor.models import Applicants, Teachers, Students, Admin
 from sqlalchemy.exc import SQLAlchemyError
 
+
+
+
+
 db.create_all()
+
+
 
 
 @app.route("/")
@@ -182,3 +188,13 @@ def get_all_students():
             "total_students": len(all_students),
             "students": all_students
         }
+
+@app.route("/delete-student/<id>", methods=['GET'])
+def delete_student(id):
+    student = Students.query.filter_by(id=id).delete()
+    if student == 0:
+        return generate_message(201, "Record not found")
+    db.session.commit()
+    return generate_message(200, "Student deleted successfully.")
+
+

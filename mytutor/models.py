@@ -65,3 +65,15 @@ class Students(db.Model):
     def __repr__(self):
         return f'({self.full_name} {self.guardian_name} {self.gender} {self.CNIC} {self.age} {self.current_institute} {self.email})'
 
+
+class Admin(db.Model):
+    __tablename__ = "admin"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f'({self.name} {self.name} {self.email} {self.role})'
+
