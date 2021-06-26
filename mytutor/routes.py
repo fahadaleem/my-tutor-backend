@@ -3,19 +3,14 @@ import re
 from flask.scaffold import F
 
 from sqlalchemy.orm import eagerload
-from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students
+from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin
 from mytutor import app, db
 from flask import render_template, request
 from mytutor.models import Applicants, Teachers, Students, Admin
 from sqlalchemy.exc import SQLAlchemyError
 
 
-
-
-
 db.create_all()
-
-
 
 
 @app.route("/")
@@ -189,6 +184,7 @@ def get_all_students():
             "students": all_students
         }
 
+
 @app.route("/delete-student/<id>", methods=['GET'])
 def delete_student(id):
     student = Students.query.filter_by(id=id).delete()
@@ -198,14 +194,14 @@ def delete_student(id):
     return generate_message(200, "Student deleted successfully.")
 
 
-@app.route("/add-admin", methods=['POST'])
+@app.route("/add-new-admin", methods=['POST'])
 def add_new_addmin():
     try:
         name = request.json['name']
         email = request.json['email']
         password = request.json['password']
-        role = request.json['json']
-        new_admin = Admin(name=name, email=email, role=role)
+        role = request.json['role']
+        new_admin = Admin(name=name, email=email, password=password, role=role)
         db.session.add(new_admin)
         db.session.commit()
         return generate_message(200, "New Admin added successfully!")
@@ -217,10 +213,29 @@ def add_new_addmin():
             return generate_message(201, "Admin is already added.")
 
 
-@app.route("/admin", methods=['GET'])
-def all_admin():
-    admins = Admin.query.all() 
+@app.route("/get-all-admin", methods=['GET'])
+def get_all_admin():
+
+    if 'email' in request.args:
+        email = request.args['email']
+        admin = Admin.query.filter(Admin.email == email).first()
+        if admin is None:
+            return generate_message(201, "Record not found")
+        return generate_message(200, "Record Found")
+    else:
+        all_admins = Admin.query.all()
+        all_admins = list(map(generate_json_for_admin, all_admins))
+        return {
+            "total_admins": len(all_admins),
+            "admins": all_admins
+        }
 
 
+@app.route("/delete-admin/<id>", methods=['GET'])
+def delete_admin(id):
+    admin = Admin.query.filter_by(id=id).delete()
 
-
+    if admin == 0:
+        return generate_message(201, 'Record not found')
+    db.session.commit()
+    return generate_message(200, 'Admin delete successfully!')
