@@ -241,5 +241,25 @@ def delete_admin(id):
     return generate_message(200, 'Admin delete successfully!')
 
 @app.route("/add-new-course", methods=['POST'])
-def course():
-   "
+def add_new_course():
+    try:
+        id = request.json['id']
+        name = request.json['name']
+        description = request.json['description']
+        course_outline = request.json['course_outline']
+        duration = request.json['duration']
+        price = request.json['price']
+        language = request.json['language']
+        category = request.json['category']
+
+        new_course = Courses(id=id, name=name, description=description, course_outline = course_outline, duration=duration, price=price, language=language, category=category)
+        db.session.add(new_course)
+        db.session.commit()
+        return generate_message(200, "Course added succesfully!")
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        if 'UNIQUE constraint failed' in error:
+            return generate_message(201, "Course is already added.")
+        elif 'already exists'.lower() in error:
+            return generate_message(201, "Course is already added.")
+    
