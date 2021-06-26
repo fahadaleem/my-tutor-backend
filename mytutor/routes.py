@@ -262,4 +262,4 @@ def add_new_course():
             return generate_message(201, "Course is already added.")
         elif 'already exists'.lower() in error:
             return generate_message(201, "Course is already added.")
-    
+
