@@ -1,8 +1,12 @@
+from os import error
 import re
-from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers
+from flask.scaffold import F
+
+from sqlalchemy.orm import eagerload
+from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers
+from mytutor.models import Applicants, Teachers, Students
 from sqlalchemy.exc import SQLAlchemyError
 
 db.create_all()
@@ -127,3 +131,46 @@ def delete_teacher(id):
         return generate_message(201, 'No Record Found')
     db.session.commit()
     return generate_message(200, 'Teacher Delete Successfully!')
+
+
+@app.route("/add-new-student", methods=['POST'])
+def add_new_student():
+    try:
+        full_name = request.json['full_name']
+        guardian_name = request.json['guardian_name']
+        gender = request.json['gender']
+        CNIC = request.json['CNIC']
+        age = request.json['age']
+        current_institute = request.json['current_institute']
+        email = request.json['email']
+
+        new_student = Students(full_name=full_name, guardian_name=guardian_name, gender=gender,
+                               CNIC=CNIC, age=age, current_institute=current_institute, email=email)
+        db.session.add(new_student)
+        db.session.commit()
+        return 'data added'
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        if 'UNIQUE constraint failed' in error:
+            return generate_message(201, "Student is already registered")
+        elif 'already exists'.lower() in error:
+            return generate_message(201, "Student is already registered")
+
+
+@app.route("/view-student/<id>", methods=['GET'])
+def view_student_details(id):
+    student = Students.query.get(id)
+    if student is None:
+        return generate_message(201, "Record not found")
+    return generate_json_for_students(student)
+
+
+@app.route("/get-all-students", methods=['GET'])
+def get_all_students():
+    all_students = Students.query.all()
+
+    all_students = list(map(generate_json_for_students, all_students))
+    return {
+        "total_students": len(all_students),
+        "students": all_students
+    }

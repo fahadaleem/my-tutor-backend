@@ -1,4 +1,5 @@
 from enum import unique
+from os import terminal_size
 
 from flask.sessions import NullSession
 from mytutor import db
@@ -47,3 +48,20 @@ class Teachers(db.Model):
 
     def __repr__(self):
         return f'({self.name} {self.email} {self.password} {self.country} {self.phone_no} {self.gender} {self.education} {self.teaching_experience} {self.salary} {self.preferred_currency} {self.intro} {self.course_code_1} {self.course_code_2} {self.resume} {self.hiring_date})'
+
+
+class Students(db.Model):
+    __tablename__ = 'students'
+
+    id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(255), nullable=False)
+    guardian_name = db.Column(db.String(255), nullable=False)
+    gender = db.Column(db.String(15), nullable=False)
+    CNIC = db.Column(db.String(255), nullable=False, unique = True)
+    age = db.Column(db.Integer, nullable=False)
+    current_institute = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'({self.full_name} {self.guardian_name} {self.gender} {self.CNIC} {self.age} {self.current_institute} {self.email})'
+

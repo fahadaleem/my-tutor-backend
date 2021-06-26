@@ -45,3 +45,14 @@ def generate_json_for_teachers(data):
     }
 
 
+def generate_json_for_students(data):
+    return {
+        "id":data.id,
+        "full_name":data.full_name,
+        "guardian_name":data.guardian_name,
+        "gender":data.gender,
+        "age":data.age,
+        "CNIC":data.CNIC,
+        "current_institute":data.current_institute,
+        "email":data.email
+    }
