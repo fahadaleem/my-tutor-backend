@@ -167,10 +167,18 @@ def view_student_details(id):
 
 @app.route("/get-all-students", methods=['GET'])
 def get_all_students():
-    all_students = Students.query.all()
 
-    all_students = list(map(generate_json_for_students, all_students))
-    return {
-        "total_students": len(all_students),
-        "students": all_students
-    }
+    if 'email' in request.args:
+        email = request.args['email']
+        student = Students.query.filter(Students.email == email).first()
+        if student is None:
+            return generate_message(201, "Record not found")
+        return generate_message(200, "Record Found")
+    else:
+        all_students = Students.query.all()
+
+        all_students = list(map(generate_json_for_students, all_students))
+        return {
+            "total_students": len(all_students),
+            "students": all_students
+        }
