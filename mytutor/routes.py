@@ -254,8 +254,6 @@ def add_new_course():
         category = request.json['category']
         visibility = request.json['visibility']
 
-
-
         new_course = Courses(id=id, name=name, description=description, course_outline = course_outline, duration=duration, price=price, language=language, category=category, title=title, visibility=visibility)
         db.session.add(new_course)
         db.session.commit()
