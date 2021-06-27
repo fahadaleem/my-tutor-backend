@@ -84,12 +84,13 @@ class Courses(db.Model):
 
     id = db.Column(db.String(255), primary_key=True)
     name = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
     course_outline = db.Column(db.Text, nullable=False)
+    category = db.Column(db.String(255), nullable=False)
     duration = db.Column(db.String(255), nullable=False)
     price = db.Column(db.String(255), nullable=False)
     language = db.Column(db.String(255), nullable=False)
-    category = db.Column(db.String(255), nullable=False)
-
+    visibility = db.Column(db.String(50), nullable=False)
     def __repr__(self):
         return f'({self.id} {self.name} {self.description} {self.course_outline} {self.duration} {self.price} {self.language} {self.category})'

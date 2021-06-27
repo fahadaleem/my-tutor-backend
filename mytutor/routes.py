@@ -245,14 +245,18 @@ def add_new_course():
     try:
         id = request.json['id']
         name = request.json['name']
+        title = request.json['title']
         description = request.json['description']
         course_outline = request.json['course_outline']
         duration = request.json['duration']
         price = request.json['price']
         language = request.json['language']
         category = request.json['category']
+        visibility = request.json['visibility']
 
-        new_course = Courses(id=id, name=name, description=description, course_outline = course_outline, duration=duration, price=price, language=language, category=category)
+
+
+        new_course = Courses(id=id, name=name, description=description, course_outline = course_outline, duration=duration, price=price, language=language, category=category, title=title, visibility=visibility)
         db.session.add(new_course)
         db.session.commit()
         return generate_message(200, "Course added succesfully!")
@@ -263,3 +267,10 @@ def add_new_course():
         elif 'already exists'.lower() in error:
             return generate_message(201, "Course is already added.")
 
+
+
+
+@app.route("/drop-table/<name>")
+def drop_table(name):
+    db.session.execute(f'drop table {name}')
+    print(db.session.execute(f'select * from {name}'))
