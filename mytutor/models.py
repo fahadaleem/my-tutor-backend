@@ -3,6 +3,7 @@ from os import terminal_size
 
 from flask.sessions import NullSession
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.schema import ForeignKey
 from mytutor import db
 from datetime import datetime
 
@@ -107,3 +108,17 @@ class Course_Assign(db.Model):
 
     def __repr__(self):
         return f'({self.id} {self.course_id} {self.course_id})'
+
+
+class Reviews(db.Model):
+    __tablename__ = "reviews"
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.Text, nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey(Teachers.id), nullable=False)
+    course_id = db.Column(db.String(255), db.ForeignKey(Courses.id), nullable=False)
+    date = db.Column(db.String(100), nullable=False)
+    reviewer_name = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return f'({self.id} {self.comment} {self.teacher_id} {self.course_id} {self.date} {self.reviewer_name})'

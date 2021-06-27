@@ -284,6 +284,16 @@ def view_course_details(id):
     return generate_json_for_course(course)
 
 
+@app.route("/delete-course/<id", methods=['GET'])
+def delete_course(id):
+    course = Courses.query.filter_by(id=id).delete()
+
+    if course == 0:
+        return generate_message(201,'Record not found!')
+    db.session.commit()
+    return generate_message(200, "Course deleted successfully!") 
+
+
 @app.route("/course-assign", methods = ['POST'])
 def course_assign():
     teacher_id = request.json['teacher_id']
@@ -297,9 +307,23 @@ def course_assign():
 
 
 
+@app.route("/get-all-details", methods=['GET'] )
+def get_all_details():
+    result = db.session.query(Courses, Teachers, Course_Assign).join(Teachers).join(Courses).filter(Teachers.id==1).all()
+
+    # result = db.session.execute('select courses.id, courses.name, teachers.name from course_assign INNER JOIN courses on course_assign.course_id = courses.id INNER join teachers on course_assign.teacher_id = teachers.id').all()
+    return str(result[0])
+
 
 
 @app.route("/drop-table/<name>")
 def drop_table(name):
-    db.session.execute(f'drop table {name}')
-    print(db.session.execute(f'select * from {name}'))
+    db.session.execute(f'drop table {name}')    
+    return 'done'
+
+
+    
+@app.route("/show-table/<name>")
+def show_table(name):
+    results =  db.session.execute(f'select * from {name}').all()    
+    return str(results)
