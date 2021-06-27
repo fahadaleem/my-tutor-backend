@@ -6,7 +6,7 @@ from sqlalchemy.orm import eagerload
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign
+from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign, Reviews
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -305,6 +305,53 @@ def course_assign():
 
     return generate_message(200,'New course assigned successfully!')
 
+@app.route("/add-new-review", methods=['POST'])
+def add_new_review():
+    rating = request.json['rating']
+    comment = request.json['comment']
+    teacher_id = request.json['teacher_id']
+    course_id = request.json['course_id']
+    date = request.json['date']
+    reviewer_name = request.json['reviewer_name']
+
+    new_review = Reviews(rating=rating, comment=comment, teacher_id=teacher_id, course_id=course_id, date=date, reviewer_name=reviewer_name)
+    db.session.add(new_review)
+    db.session.commit()
+    return generate_message(200, 'Review added succesfully!')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @app.route("/get-all-details", methods=['GET'] )
@@ -313,6 +360,8 @@ def get_all_details():
 
     # result = db.session.execute('select courses.id, courses.name, teachers.name from course_assign INNER JOIN courses on course_assign.course_id = courses.id INNER join teachers on course_assign.teacher_id = teachers.id').all()
     return str(result[0])
+
+
 
 
 
