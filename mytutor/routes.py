@@ -6,7 +6,7 @@ from sqlalchemy.orm import eagerload
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students, Admin, Courses
+from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -282,6 +282,22 @@ def view_course_details(id):
     if course is None:
         return generate_message(201, "Record not found!")
     return generate_json_for_course(course)
+
+
+@app.route("/course-assign", methods = ['POST'])
+def course_assign():
+    teacher_id = request.json['teacher_id']
+    course_id = request.json['course_id']
+    
+    new_course_assign = Course_Assign(teacher_id=teacher_id, course_id=course_id)
+    db.session.add(new_course_assign)
+    db.session.commit()
+
+    return generate_message(200,'New course assigned successfully!')
+
+
+
+
 
 @app.route("/drop-table/<name>")
 def drop_table(name):

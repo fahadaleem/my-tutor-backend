@@ -2,6 +2,7 @@ from enum import unique
 from os import terminal_size
 
 from flask.sessions import NullSession
+from sqlalchemy.orm import relationship
 from mytutor import db
 from datetime import datetime
 
@@ -94,3 +95,15 @@ class Courses(db.Model):
     visibility = db.Column(db.String(50), nullable=False)
     def __repr__(self):
         return f'({self.id} {self.name} {self.description} {self.course_outline} {self.duration} {self.price} {self.language} {self.category})'
+
+
+
+class Course_Assign(db.Model):
+    __tablename__ = 'course_assign'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'), nullable=False)
+    course_id = db.Column(db.String(255), db.ForeignKey('courses.id'), nullable=False)
+
+    def __repr__(self):
+        return f'({self.id} {self.course_id} {self.course_id})'
