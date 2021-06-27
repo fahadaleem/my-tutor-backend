@@ -1,4 +1,4 @@
-from os import error
+from os import curdir, error
 import re
 from flask.scaffold import F
 
@@ -275,6 +275,13 @@ def get_all_courses():
         "courses":courses
     }
 
+    
+@app.route("/view-course/<id>", methods=['GET'])
+def view_course_details(id):
+    course = Courses.query.get(str(id).upper())
+    if course is None:
+        return generate_message(201, "Record not found!")
+    return generate_json_for_course(course)
 
 @app.route("/drop-table/<name>")
 def drop_table(name):
