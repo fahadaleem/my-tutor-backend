@@ -1,3 +1,6 @@
+import re
+
+
 def generate_message(code, message):
     return {
         "code":f"{code}",
@@ -78,4 +81,33 @@ def generate_json_for_course(data):
         "language":data.language,
         "category":data.category,
         "visibility":data.visibility
+    }
+
+
+def generate_json_for_reviews(data):
+    return {
+        "review_id":data.id,
+        "rating":data.rating,
+        "comment":data.comment,
+        "date":data.date,
+        "reviewer_name":data.reviewer_name
+    }
+
+def generate_json_for_course_details(data, reviews_info):
+
+    reviews = list(map(generate_json_for_reviews, reviews_info))
+
+    return {
+        "teacher_id":data.id,
+        "teacher_name":data.teacher_name,
+        "teacher_teaching_experience":data.teaching_experience,
+        "teacher_gender":data.gender,
+        "course_name":data.name,
+        "course_title":data.title,
+        "course_description":data.description,
+        "course_category":data.category,
+        "course_price":data.price,
+        "course_duration":data.duration,
+        "total_reviews":len(reviews),
+        "reviews":reviews
     }

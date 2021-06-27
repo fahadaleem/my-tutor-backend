@@ -1,9 +1,12 @@
+from operator import and_
 from os import curdir, error
 import re
 from flask.scaffold import F
+from sqlalchemy import exc
 
 from sqlalchemy.orm import eagerload
-from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course
+from sqlalchemy.sql.elements import ReleaseSavepointClause
+from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details
 from mytutor import app, db
 from flask import render_template, request
 from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign, Reviews
@@ -284,7 +287,7 @@ def view_course_details(id):
     return generate_json_for_course(course)
 
 
-@app.route("/delete-course/<id", methods=['GET'])
+@app.route("/delete-course/<id>", methods=['GET'])
 def delete_course(id):
     course = Courses.query.filter_by(id=id).delete()
 
@@ -322,47 +325,21 @@ def add_new_review():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.route("/get-all-details", methods=['GET'] )
+## localhost:2000/get-all-details?course_id=PY-01&&teacher_id=1
+@app.route("/get-complete-course-details", methods=['GET'] )
 def get_all_details():
-    result = db.session.query(Courses, Teachers, Course_Assign).join(Teachers).join(Courses).filter(Teachers.id==1).all()
+    try:
 
-    # result = db.session.execute('select courses.id, courses.name, teachers.name from course_assign INNER JOIN courses on course_assign.course_id = courses.id INNER join teachers on course_assign.teacher_id = teachers.id').all()
-    return str(result[0])
+        course_id = request.args.get('course_id')
+        teacher_id = request.args.get('teacher_id')
 
+        course_info = db.session.query(Teachers.id, Teachers.name.label('teacher_name'), Teachers.teaching_experience, Teachers.gender,Courses.name, Courses.title, Courses.description, Courses.price, Courses.course_outline, Courses.duration,Courses.category, Course_Assign).join(Teachers).join(Courses).filter(Courses.id==course_id).one()
+        reviews_info = Reviews.query.filter(and_(Reviews.course_id==course_id, Reviews.teacher_id==teacher_id)).all()
 
-
+        return generate_json_for_course_details(course_info, reviews_info)
+    except SQLAlchemyError as e:
+        error = str(e)
+        return generate_message(201,"Record not found!")
 
 
 @app.route("/drop-table/<name>")
