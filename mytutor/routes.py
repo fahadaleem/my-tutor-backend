@@ -3,7 +3,7 @@ import re
 from flask.scaffold import F
 
 from sqlalchemy.orm import eagerload
-from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin
+from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course
 from mytutor import app, db
 from flask import render_template, request
 from mytutor.models import Applicants, Teachers, Students, Admin, Courses
@@ -266,6 +266,14 @@ def add_new_course():
             return generate_message(201, "Course is already added.")
 
 
+@app.route("/get-all-courses", methods=['GET'])
+def get_all_courses():
+    courses = Courses.query.all()
+    courses = list(map(generate_json_for_course, courses))
+    return {
+        "total_courses":len(courses),
+        "courses":courses
+    }
 
 
 @app.route("/drop-table/<name>")

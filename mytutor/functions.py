@@ -69,13 +69,13 @@ def generate_json_for_admin(data):
 def generate_json_for_course(data):
     return {
         "id":data.id,
-    "name":data.name, 
-    "title":data.title,
-    "description":data.description,
-    "course_outline":data.course_outline,
-    "duration":data.duration,
-    "price":data.price,
-    "language":data.langauge,
-    "category":data.category,
-    "visibility":data.visibility
+        "name":data.name, 
+        "title":data.title,
+        "description":data.description,
+        "course_outline":data.course_outline,
+        "duration":data.duration,
+        "price":data.price,
+        "language":data.language,
+        "category":data.category,
+        "visibility":data.visibility
     }
