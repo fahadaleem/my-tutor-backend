@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-ENV = 'dev'
+ENV = 'prod'
 
 if ENV == 'dev':
     app.debug = True
