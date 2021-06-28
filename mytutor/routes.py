@@ -226,7 +226,7 @@ def get_all_admin():
             return generate_message(201, "Record not found")
         return {
             "code":"200",
-            admin_info:generate_json_for_admin(admin)
+            "admin_info":generate_json_for_admin(admin)
         }
     else:
         all_admins = Admin.query.all()
