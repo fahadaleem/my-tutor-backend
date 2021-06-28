@@ -152,7 +152,7 @@ def add_new_student():
                                CNIC=CNIC, age=age, current_institute=current_institute, email=email)
         db.session.add(new_student)
         db.session.commit()
-        return 'data added'
+        return generate_message(200, "Student acount created succesfully!")
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         if 'UNIQUE constraint failed' in error:
@@ -224,7 +224,10 @@ def get_all_admin():
         admin = Admin.query.filter(Admin.email == email).first()
         if admin is None:
             return generate_message(201, "Record not found")
-        return generate_message(200, "Record Found")
+        return {
+            "code":"200",
+            admin_info:generate_json_for_admin(admin)
+        }
     else:
         all_admins = Admin.query.all()
         all_admins = list(map(generate_json_for_admin, all_admins))
