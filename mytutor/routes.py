@@ -115,11 +115,22 @@ def delete_applicant(id):
 
 @app.route("/get-all-teachers", methods=['GET'])
 def get_all_teachers():
-    all_teachers = list(map(generate_json_for_teachers, Teachers.query.all()))
-    return {
-        "total_teachers": len(all_teachers),
-        "teachers": all_teachers
-    }
+
+    if 'email' in request.args:
+        teacher_email = request.args.get('email')
+        teacher = Teachers.query.filter(Teachers.email==teacher_email).first()
+        if teacher is None:
+            return generate_message(201, "Record Not Found")
+        return {
+            "code":200,
+            "teacher_info":generate_json_for_teachers(teacher)
+        }
+    else:
+        all_teachers = list(map(generate_json_for_teachers, Teachers.query.all()))
+        return {
+            "total_teachers": len(all_teachers),
+            "teachers": all_teachers
+        }
 
 
 @app.route("/view-teacher/<id>", methods=['GET'])
@@ -177,7 +188,10 @@ def get_all_students():
         student = Students.query.filter(Students.email == email).first()
         if student is None:
             return generate_message(201, "Record not found")
-        return generate_message(200, "Record Found")
+        return {
+            "code":200,
+            "student_info":generate_json_for_students(student)
+        }
     else:
         all_students = Students.query.all()
 
