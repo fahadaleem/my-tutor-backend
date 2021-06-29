@@ -122,7 +122,7 @@ def get_all_teachers():
         if teacher is None:
             return generate_message(201, "Record Not Found")
         return {
-            "code":200,
+            "code":"200",
             "teacher_info":generate_json_for_teachers(teacher)
         }
     else:
@@ -189,7 +189,7 @@ def get_all_students():
         if student is None:
             return generate_message(201, "Record not found")
         return {
-            "code":200,
+            "code":"200",
             "student_info":generate_json_for_students(student)
         }
     else:
