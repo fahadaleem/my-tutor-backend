@@ -86,7 +86,12 @@ def hire_new_applicant():
         # delete applicant after hiring
         Applicants.query.filter_by(email=email).delete()
         db.session.commit()
-        return generate_message(200, 'Teacher Hired Successfully!')
+        teacher = Teachers.query.filter(Teachers.email==email).one()
+        return {
+            "teacher_id": teacher.id,
+            "code":"200",
+            "message":"Teacher Hired Successfully!"
+        }
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         if 'UNIQUE constraint failed' in error:
