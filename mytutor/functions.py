@@ -80,7 +80,8 @@ def generate_json_for_course(data):
         "price":data.price,
         "language":data.language,
         "category":data.category,
-        "visibility":data.visibility
+        "visibility":data.visibility,
+        "is_course_assigned":data.is_course_assigned
     }
 
 

@@ -279,13 +279,15 @@ def add_new_course():
         language = request.json['language']
         category = request.json['category']
         visibility = request.json['visibility']
+        is_course_assigned = request.json['is_course_assigned']
 
-        new_course = Courses(id=id, name=name, description=description, course_outline = course_outline, duration=duration, price=price, language=language, category=category, title=title, visibility=visibility)
+        new_course = Courses(id=id, name=name, description=description, course_outline = course_outline, duration=duration, price=price, language=language, category=category, title=title, visibility=visibility, is_course_assigned=is_course_assigned)
         db.session.add(new_course)
         db.session.commit()
         return generate_message(200, "Course added succesfully!")
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
+        print(error)
         if 'UNIQUE constraint failed' in error:
             return generate_message(201, "Course is already added.")
         elif 'already exists'.lower() in error:
@@ -326,6 +328,9 @@ def course_assign():
         teacher_id = request.json['teacher_id']
         course_id = request.json['course_id']
         
+        course = Courses.query.filter(Courses.id==course_id).one()
+        course.is_course_assigned = "true"
+        db.session.commit()
         new_course_assign = Course_Assign(teacher_id=teacher_id, course_id=course_id)
         db.session.add(new_course_assign)
         db.session.commit()

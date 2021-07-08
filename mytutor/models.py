@@ -94,8 +94,9 @@ class Courses(db.Model):
     price = db.Column(db.String(255), nullable=False)
     language = db.Column(db.String(255), nullable=False)
     visibility = db.Column(db.String(50), nullable=False)
+    is_course_assigned = db.Column(db.String(10), nullable=False)
     def __repr__(self):
-        return f'({self.id} {self.name} {self.description} {self.course_outline} {self.duration} {self.price} {self.language} {self.category})'
+        return f'({self.id} {self.name} {self.description} {self.course_outline} {self.duration} {self.price} {self.language} {self.category} {self.is_course_assigned})'
 
 
 
@@ -104,7 +105,7 @@ class Course_Assign(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id', ondelete="CASCADE"), nullable=False)
-    course_id = db.Column(db.String(255), db.ForeignKey('courses.id'), nullable=False, unique=True)
+    course_id = db.Column(db.String(255), db.ForeignKey('courses.id', ondelete="CASCADE"), nullable=False, unique=True)
 
     def __repr__(self):
         return f'({self.id} {self.course_id} {self.course_id})'
