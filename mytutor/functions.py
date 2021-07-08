@@ -109,6 +109,7 @@ def generate_json_for_course_details(data, reviews_info):
         "course_category":data.category,
         "course_price":data.price,
         "course_duration":data.duration,
+        "course_outline":data.course_outline,
         "total_reviews":len(reviews),
         "reviews":reviews
     }
