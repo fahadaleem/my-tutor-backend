@@ -103,7 +103,7 @@ class Course_Assign(db.Model):
     __tablename__ = 'course_assign'
 
     id = db.Column(db.Integer, primary_key=True)
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'), nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id', ondelete="CASCADE"), nullable=False)
     course_id = db.Column(db.String(255), db.ForeignKey('courses.id'), nullable=False, unique=True)
 
     def __repr__(self):
