@@ -322,14 +322,21 @@ def delete_course(id):
 
 @app.route("/course-assign", methods = ['POST'])
 def course_assign():
-    teacher_id = request.json['teacher_id']
-    course_id = request.json['course_id']
-    
-    new_course_assign = Course_Assign(teacher_id=teacher_id, course_id=course_id)
-    db.session.add(new_course_assign)
-    db.session.commit()
+    try:
+        teacher_id = request.json['teacher_id']
+        course_id = request.json['course_id']
+        
+        new_course_assign = Course_Assign(teacher_id=teacher_id, course_id=course_id)
+        db.session.add(new_course_assign)
+        db.session.commit()
 
-    return generate_message(200,'New course assigned successfully!')
+        return generate_message(200,'New course assigned successfully!')
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        if 'UNIQUE constraint failed' in error:
+            return generate_message(201, f"{course_id} Course is already assigned to other teacher.")
+        elif 'already exists'.lower() in error:
+            return generate_message(201, f"{course_id} Course is already assigned to other teacher.")
 
 @app.route("/add-new-review", methods=['POST'])
 def add_new_review():
