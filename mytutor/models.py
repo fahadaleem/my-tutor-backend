@@ -117,8 +117,8 @@ class Reviews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.Text, nullable=False)
-    teacher_id = db.Column(db.Integer, db.ForeignKey(Teachers.id), nullable=False)
-    course_id = db.Column(db.String(255), db.ForeignKey(Courses.id), nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey(Teachers.id, ondelete="CASCADE"), nullable=False)
+    course_id = db.Column(db.String(255), db.ForeignKey(Courses.id, ondelete="CASCADE"), nullable=False)
     date = db.Column(db.String(100), nullable=False)
     reviewer_name = db.Column(db.String(255), nullable=False)
 
