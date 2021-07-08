@@ -147,6 +147,7 @@ def view_teacher(id):
 @app.route("/delete-teacher/<id>", methods=['GET'])
 def delete_teacher(id):
     deleted_teacher = Teachers.query.filter_by(id=id).delete()
+    Course_Assign.query.filter_by(id=id).delete()
     if deleted_teacher == 0:
         return generate_message(201, 'No Record Found')
     db.session.commit()
