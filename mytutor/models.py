@@ -104,7 +104,7 @@ class Course_Assign(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'), nullable=False)
-    course_id = db.Column(db.String(255), db.ForeignKey('courses.id'), nullable=False)
+    course_id = db.Column(db.String(255), db.ForeignKey('courses.id'), nullable=False, unique=True)
 
     def __repr__(self):
         return f'({self.id} {self.course_id} {self.course_id})'
