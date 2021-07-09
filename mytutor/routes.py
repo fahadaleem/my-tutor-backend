@@ -6,7 +6,7 @@ from sqlalchemy import exc
 
 from sqlalchemy.orm import eagerload
 from sqlalchemy.sql.elements import ReleaseSavepointClause
-from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details
+from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details, generate_json_for_course_details2
 from mytutor import app, db
 from flask import render_template, request
 from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign, Reviews
@@ -366,7 +366,7 @@ def get_course_details():
     try:
         course_id = request.args.get('course-id')
         # teacher_id = request.args.get('teacher_id')
-        course_info = db.session.query(Teachers.id, Teachers.name.label('teacher_name'), Teachers.teaching_experience, Teachers.gender,Courses.name, Courses.title, Courses.description,Courses.course_outline, Courses.price, Courses.course_outline, Courses.duration,Courses.category, Course_Assign).join(Teachers).join(Courses).filter(Courses.id==course_id).one()
+        course_info = db.session.query(Teachers.id, Teachers.name.label('teacher_name'), Teachers.teaching_experience, Teachers.gender,Courses.name, Courses.title, Courses.description,Courses.course_outline, Courses.price, Courses.course_outline, Courses.duration,Courses.category,Courses.language, Course_Assign).join(Teachers).join(Courses).filter(Courses.id==course_id).one()
         reviews_info = Reviews.query.filter(and_(Reviews.course_id==course_id, Reviews.teacher_id==course_info.id)).all()
 
         return generate_json_for_course_details(course_info, reviews_info)
@@ -374,7 +374,7 @@ def get_course_details():
         error = str(e)
         print(error)
         course_details = Courses.query.filter(Courses.id==course_id).one()
-        return generate_json_for_course(course_details)
+        return generate_json_for_course_details2(course_details)
 
 
 @app.route("/drop-table/<name>")

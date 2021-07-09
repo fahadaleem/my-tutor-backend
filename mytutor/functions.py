@@ -106,10 +106,26 @@ def generate_json_for_course_details(data, reviews_info):
         "course_name":data.name,
         "course_title":data.title,
         "course_description":data.description,
+        "course_langauge":data.language,
         "course_category":data.category,
         "course_price":data.price,
         "course_duration":data.duration,
         "course_outline":data.course_outline,
         "total_reviews":len(reviews),
         "reviews":reviews
+    }
+
+def generate_json_for_course_details2(data):
+    return {
+        "id":data.id,
+        "course_name":data.name, 
+        "course_title":data.title,
+        "course_description":data.description,
+        "course_outline":data.course_outline,
+        "course_duration":data.duration,
+        "course_price":data.price,
+        "course_language":data.language,
+        "course_category":data.category,
+        "course_visibility":data.visibility,
+        "is_course_assigned":data.is_course_assigned
     }
