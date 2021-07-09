@@ -364,7 +364,7 @@ def add_new_review():
 @app.route("/get-course-details", methods=['GET'] )
 def get_course_details():
     try:
-        course_id = request.args.get('course_id')
+        course_id = request.args.get('course-id')
         # teacher_id = request.args.get('teacher_id')
         course_info = db.session.query(Teachers.id, Teachers.name.label('teacher_name'), Teachers.teaching_experience, Teachers.gender,Courses.name, Courses.title, Courses.description,Courses.course_outline, Courses.price, Courses.course_outline, Courses.duration,Courses.category, Course_Assign).join(Teachers).join(Courses).filter(Courses.id==course_id).one()
         reviews_info = Reviews.query.filter(and_(Reviews.course_id==course_id, Reviews.teacher_id==course_info.id)).all()
@@ -372,7 +372,10 @@ def get_course_details():
         return generate_json_for_course_details(course_info, reviews_info)
     except SQLAlchemyError as e:
         error = str(e)
-        return generate_message(201,"Record not found!")
+        print(error)
+        if 'No row was found when one was required' in error:
+            course_details = Courses.query.filter(Courses.id==course_id).one()
+            return generate_json_for_course(course_details)
 
 
 @app.route("/drop-table/<name>")
