@@ -373,9 +373,8 @@ def get_course_details():
     except SQLAlchemyError as e:
         error = str(e)
         print(error)
-        if 'No row was found when one was required' in error:
-            course_details = Courses.query.filter(Courses.id==course_id).one()
-            return generate_json_for_course(course_details)
+        course_details = Courses.query.filter(Courses.id==course_id).one()
+        return generate_json_for_course(course_details)
 
 
 @app.route("/drop-table/<name>")
