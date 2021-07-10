@@ -101,6 +101,7 @@ def generate_json_for_course_details(data, reviews_info):
     return {
         "teacher_id":data.id,
         "teacher_name":data.teacher_name,
+        "teacher_intro":data.intro,
         "teacher_teaching_experience":data.teaching_experience,
         "teacher_gender":data.gender,
         "course_name":data.name,
