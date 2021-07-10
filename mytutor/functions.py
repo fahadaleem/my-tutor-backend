@@ -106,7 +106,7 @@ def generate_json_for_course_details(data, reviews_info):
         "course_name":data.name,
         "course_title":data.title,
         "course_description":data.description,
-        "course_langauge":data.language,
+        "course_language":data.language,
         "course_category":data.category,
         "course_price":data.price,
         "course_duration":data.duration,
