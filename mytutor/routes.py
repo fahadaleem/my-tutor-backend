@@ -41,7 +41,7 @@ def search_course():
     res = {
         "courses": []
     }
-    course = Courses.query.filter(Courses.name.like("%" + courseName + "%")).all()
+    course = Courses.query.filter(Courses.name.lower().like("%" + courseName.lower() + "%")).all()
     
     if not(len(course)):
         return generate_message(201, "Course Not Found")
