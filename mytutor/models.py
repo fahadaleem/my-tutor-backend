@@ -84,7 +84,7 @@ class Admin(db.Model):
 class Courses(db.Model):
     __tablename__= "courses"
 
-    id = db.Column(db.String(255), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
@@ -111,6 +111,23 @@ class Course_Assign(db.Model):
         return f'({self.id} {self.course_id} {self.course_id})'
 
 
+#TODO Complaint Table
+
+class Complaint(db.Model):
+    __tablename__ = 'complaint'
+
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    complainer_name = db.Column(db.String(255), nullable=False)
+    complainer_type = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    country = db.Column(db.String(100), nullable=False)
+    phone_no = db.Column(db.String(25), nullable=False)
+    gender = db.Column(db.String(25), nullable=False)
+    subject = db.Column(db.String(255), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    def __repr__(self):
+        return f'({self.name} {self.description} {self.course_outline} {self.duration} {self.price} {self.language} {self.category} {self.is_course_assigned})'
+
 #  Course enroll api similar to course assign for students
 
 class Course_Enroll(db.Model):
@@ -121,7 +138,7 @@ class Course_Enroll(db.Model):
     course_id = db.Column(db.String(255), db.ForeignKey('courses.id', ondelete="CASCADE"), nullable=False)
     
     def __repr__(self):
-        return f'({self.id} {self.course_id} {self.course_id})'
+        return f'({self.id} {self.course_id} {self.student_id})'
 
 class Reviews(db.Model):
     __tablename__ = "reviews"

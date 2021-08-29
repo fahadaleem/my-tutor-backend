@@ -27,6 +27,19 @@ def generate_json_for_applicants(data):
 
     }
 
+def generate_json_for_complaint(data):
+    return  {
+        "id":f"{data.id}",
+        "complainer_name":f"{data.complainer_name}",
+        "complainer_type": f"{data.complainer_type}",
+        "email":f"{data.email}",
+        "country":f"{data.country}",
+        "phone_no":f"{data.phone_no}",
+        "gender":f"{data.gender}",
+        "subject" : f"{data.subject}",
+        "message": f"{data.message}"
+    }
+
 
 def generate_json_for_teachers(data):
     return {

@@ -5,12 +5,12 @@ from flask.scaffold import F
 from flask_cors import core
 from sqlalchemy import exc
 
-from sqlalchemy.orm import eagerload
+from sqlalchemy.orm import eagerload, query
 from sqlalchemy.sql.elements import ReleaseSavepointClause
-from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details, generate_json_for_course_details2
+from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_complaint, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details, generate_json_for_course_details2
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign, Reviews, Course_Enroll
+from mytutor.models import Applicants, Complaint, Teachers, Students, Admin, Courses, Course_Assign, Reviews, Course_Enroll
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -33,7 +33,6 @@ def get_all_applicant():
     }
 
 
-#TODO search course
 
 @app.route("/search-course/", methods = ['GET'])
 def search_course():
@@ -90,6 +89,65 @@ def enroll():
     db.session.commit()
     return generate_message(200, "Enrollment Completed")
 
+#TODO Unenroll api
+
+@app.route("/unenroll", methods= ['GET'])
+def unenroll():
+    course_enroll_id = request.args['course_enroll_id']
+
+    course_enroll_to_delete = Course_Enroll.query.filter(Course_Enroll.id == course_enroll_id).delete()
+    if not(course_enroll_to_delete):
+        return generate_message(201, "Enrollment not found")
+    db.session.commit()
+    return generate_message(200, "Unenrollment Completed")
+
+#TODO Get all complaints
+
+@app.route("/get-all-complaints", methods=['GET'])
+def get_all_complaints():
+    complaints = Complaint.query.all()
+    complaints = map(generate_json_for_complaint, complaints)
+    all_complaints = list(complaints)
+    return {
+        "total_complaints": len(all_complaints),
+        "applicants": all_complaints
+    }
+
+#TODO Post complaint
+
+@app.route("/add-new-complaint", methods = ['POST'])
+def add_new_complaint():
+
+    complainer_name = request.json['complainer_name']
+    complainer_type = request.json['complainer_type']
+    email = request.json['email']
+    country = request.json['country']
+    phone_no = request.json['phone_no']
+    gender = request.json['gender']
+    subject = request.json['subject']
+    message = request.json['message']
+    
+    new_complaint = Complaint(complainer_name=complainer_name, complainer_type=complainer_type,email=email,country=country,phone_no=phone_no, gender=gender,
+                            subject=subject, message=message)
+    db.session.add(new_complaint)
+    db.session.commit()
+    return generate_message(200, "Complaint posted succesfully!")
+    # except SQLAlchemyError as e:
+    #     error = str(e.__dict__['orig'])
+    #     if 'UNIQUE constraint failed' in error:
+    #         return generate_message(201, "Student is already registered")
+    #     elif 'already exists'.lower() in error:
+    #         return generate_message(201, "Student is already registered")
+
+
+#TODO Delete Complaint
+@app.route("/reject-complaint", methods= ['GET'])
+def regect_complaint():
+    complaint_id = request.args['complaint_id']
+
+    Complaint.query.filter(Complaint.id == complaint_id).delete()
+    db.session.commit()
+    return generate_message(200, "Complaint Rejected")
 
 
 @app.route("/add-new-applicant", methods=['POST'])
