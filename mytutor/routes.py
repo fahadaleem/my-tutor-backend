@@ -10,7 +10,7 @@ from sqlalchemy.sql.elements import ReleaseSavepointClause
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details, generate_json_for_course_details2
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Course_Enroll, Teachers, Students, Admin, Courses, Course_Assign, Reviews
+from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign, Reviews
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -62,27 +62,27 @@ def search_course():
     #         res.append(obj)
     #     return res
 
-@app.route("/enroll", methods= ['POST'])
-def enroll():
+# @app.route("/enroll", methods= ['POST'])
+# def enroll():
 
-    course_id = request.args['course_id']
-    course = Course_Enroll.query.filter(Courses.id == course_id).one()
-    if not(course):
-        return generate_message(201, "Course Not Found")
+#     course_id = request.args['course_id']
+#     course = Course_Enroll.query.filter(Courses.id == course_id).one()
+#     if not(course):
+#         return generate_message(201, "Course Not Found")
         
-    student_id = request.args['student_id']
-    student = Students.query.filter(Students.id == student_id).one()
-    if not(student):
-        return generate_message(201, "Student Not Found")
+#     student_id = request.args['student_id']
+#     student = Students.query.filter(Students.id == student_id).one()
+#     if not(student):
+#         return generate_message(201, "Student Not Found")
 
-    # course_id = course    
-    # student_id = student
+#     # course_id = course    
+#     # student_id = student
 
-    new_course_enroll = Course_Enroll(course_id = course_id, student_id = student_id)
+#     new_course_enroll = Course_Enroll(course_id = course_id, student_id = student_id)
 
-    db.session.add(new_course_enroll)
-    db.session.commit()
-    return generate_message(200, "Enrollment Completed")
+#     db.session.add(new_course_enroll)
+#     db.session.commit()
+#     return generate_message(200, "Enrollment Completed")
 
 
 
