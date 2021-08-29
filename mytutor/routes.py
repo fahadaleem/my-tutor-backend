@@ -2,6 +2,7 @@ from operator import and_
 from os import curdir, error
 import re
 from flask.scaffold import F
+from flask_cors import core
 from sqlalchemy import exc
 
 from sqlalchemy.orm import eagerload
@@ -9,7 +10,7 @@ from sqlalchemy.sql.elements import ReleaseSavepointClause
 from mytutor.functions import generate_message, generate_json_for_applicants, generate_json_for_teachers, generate_json_for_students, generate_json_for_admin,generate_json_for_course, generate_json_for_course_details, generate_json_for_course_details2
 from mytutor import app, db
 from flask import render_template, request
-from mytutor.models import Applicants, Teachers, Students, Admin, Courses, Course_Assign, Reviews
+from mytutor.models import Applicants, Course_Enroll, Teachers, Students, Admin, Courses, Course_Assign, Reviews
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -30,6 +31,59 @@ def get_all_applicant():
         "total_applicants": len(all_applicants),
         "applicants": all_applicants
     }
+
+
+#TODO search course
+
+@app.route("/search-course/", methods = ['GET'])
+def search_course():
+    courseName = request.args['courseName'] 
+    res = {
+        "courses": []
+    }
+    course = Courses.query.filter(Courses.name.like("%" + courseName + "%")).all()
+    
+    if not(len(course)):
+        return generate_message(201, "Course Not Found")
+
+    else:
+        for aCourse in course:
+            obj = {
+                "course_id": aCourse.id,
+                "code":"200",
+                "name": aCourse.name
+            }
+
+            res['courses'].append(obj)
+
+
+    return res
+
+    #         res.append(obj)
+    #     return res
+
+@app.route("/enroll", methods= ['POST'])
+def enroll():
+
+    course_id = request.args['course_id']
+    course = Course_Enroll.query.filter(Courses.id == course_id).one()
+    if not(course):
+        return generate_message(201, "Course Not Found")
+        
+    student_id = request.args['student_id']
+    student = Students.query.filter(Students.id == student_id).one()
+    if not(student):
+        return generate_message(201, "Student Not Found")
+
+    # course_id = course    
+    # student_id = student
+
+    new_course_enroll = Course_Enroll(course_id = course_id, student_id = student_id)
+
+    db.session.add(new_course_enroll)
+    db.session.commit()
+    return generate_message(200, "Enrollment Completed")
+
 
 
 @app.route("/add-new-applicant", methods=['POST'])

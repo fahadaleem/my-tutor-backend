@@ -111,6 +111,18 @@ class Course_Assign(db.Model):
         return f'({self.id} {self.course_id} {self.course_id})'
 
 
+#  Course enroll api similar to course assign for students
+
+class Course_Enroll(db.Model):
+    __tablename__ = 'course_enroll'
+
+    id = db.Column(db.Integer, primary_key = True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id', ondelete="CASCADE"), nullable=False)
+    course_id = db.Column(db.String(255), db.ForeignKey('courses.id', ondelete="CASCADE"), nullable=False)
+    
+    def __repr__(self):
+        return f'({self.id} {self.course_id} {self.course_id})'
+
 class Reviews(db.Model):
     __tablename__ = "reviews"
 
